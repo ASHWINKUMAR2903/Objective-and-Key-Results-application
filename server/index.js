@@ -5,10 +5,12 @@ require("dotenv").config();
 const authRoutes = require('./routes/auth');
 const verifyToken = require('./middleware/authMiddleware');
 const app = express();
+const okrRoutes = require('./routes/okr');
 
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
+app.use('/api/okrs', okrRoutes);
 
 app.get("/", (req, res) => {
   res.send("MyOKR backend is running!");

@@ -6,6 +6,9 @@ const verifyToken = require('../middleware/authMiddleware');
 // Create OKR
 router.post('/', verifyToken, async (req, res) => {
   try {
+    console.log('Request body:', req.body);
+    console.log('User ID:', req.user.id);
+
     const { title, objective, keyResults } = req.body;
     const newOKR = new OKR({
       title,
@@ -15,7 +18,8 @@ router.post('/', verifyToken, async (req, res) => {
     });
     await newOKR.save();
     res.status(201).json(newOKR);
-  } catch (err) {
+  }
+  catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
