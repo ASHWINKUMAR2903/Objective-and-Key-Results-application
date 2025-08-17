@@ -39,12 +39,18 @@ router.put('/:id', verifyToken, async (req, res) => {
   try {
     const okr = await OKR.findOneAndUpdate(
       { _id: req.params.id, owner: req.user.id },
-      req.body,
+      { 
+        title: req.body.title,
+        objective: req.body.objective,
+        keyResults: req.body.keyResults,
+        progress: req.body.progress
+      },
       { new: true }
     );
     if (!okr) return res.status(404).json({ message: 'OKR not found' });
     res.json(okr);
-  } catch (err) {
+  } 
+  catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
@@ -58,7 +64,8 @@ router.delete('/:id', verifyToken, async (req, res) => {
     });
     if (!okr) return res.status(404).json({ message: 'OKR not found' });
     res.json({ message: 'OKR deleted' });
-  } catch (err) {
+  } 
+  catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
