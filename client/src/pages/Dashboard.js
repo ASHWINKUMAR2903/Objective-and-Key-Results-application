@@ -268,18 +268,22 @@ function Dashboard() {
                   value={editObjective}
                   onChange={(e) => setEditObjective(e.target.value)}
                 />
-                {editKeyResults.map((kr, i) => (
-                  <input
-                    key={i}
-                    className="form-control mb-1"
-                    value={kr}
-                    onChange={(e) => {
-                      const updated = [...editKeyResults];
-                      updated[i] = e.target.value;
-                      setEditKeyResults(updated);
-                    }}
-                  />
-                ))}
+                {Array.isArray(editKeyResults) && editKeyResults.length > 0 ? (
+                  editKeyResults.map((kr, i) => (
+                    <input
+                      key={i}
+                      className="form-control mb-1"
+                      value={kr}
+                      onChange={(e) => {
+                        const updated = [...editKeyResults];
+                        updated[i] = e.target.value;
+                        setEditKeyResults(updated);
+                      }}
+                    />
+                  ))
+                ) : (
+                  <p>No Key Results</p>
+                )}
                 <button
                   className="btn btn-sm btn-success me-2"
                   onClick={() => handleEditOKR(okr._id)}> 💾 Save </button>
@@ -292,9 +296,13 @@ function Dashboard() {
                 <strong>{okr.title}</strong>
                 <p>{okr.objective}</p>
                 <ul>
-                  {okr.keyResults.map((kr, i) => (
-                    <li key={i}>{kr}</li>
-                  ))}
+                  {Array.isArray(okr.keyResults) && okr.keyResults.length > 0 ? (
+                    okr.keyResults.map((kr, i) => (
+                      <li key={i}>{kr}</li>
+                    ))
+                  ) : (
+                    <li>No Key Results</li>
+                  )}
                 </ul>
                 <p>Progress: {okr.progress}%</p>
 
@@ -321,13 +329,16 @@ function Dashboard() {
                     setEditingOKRId(okr._id);
                     setEditTitle(okr.title);
                     setEditObjective(okr.objective);
-                    setEditKeyResults(okr.keyResults);
+                    setEditKeyResults(Array.isArray(okr.keyResults) ? okr.keyResults : []);
                   }}> ✏️ Edit </button> </>
             )}
           </li>
           ))}
         </ul>
       )}
+      <button onClick={() => navigate('/hierarchy')} className="btn btn-info">
+        Go to Hierarchy
+      </button>
     </div>
   );
 }
